@@ -13,18 +13,28 @@
         color: #fff;
 
         &:hover {
-            background-color: rgba($color: var.$primary, $alpha: 0.5);
+            background-color: var.$secondary;
         }
     }
 
     &.cancel {
         background-color: var.$red;
         color: #fff;
+
+        &:hover {
+            background-color: var.$light-red;
+        }
     }
 
     &.outlined {
         background-color: transparent;
         border: 2px solid var.$primary;
         color: var.$primary;
+
+        &:hover {
+            background-color: var.$secondary;
+            border-color: transparent;
+            color: #fff;
+        }
     }
 }
