@@ -1,0 +1,48 @@
+@use '../../assets/styles/variables.scss' as var;
+
+.teacher-dashboard-container {
+    display: grid;
+    grid-template-rows: repeat(12, 1fr);
+    height: 100%;
+
+    .container {
+        grid-row: 2/-1;
+        display: flex;
+        flex-direction: column;
+        padding: 2.22vw;
+        gap: 2.22vw;
+
+        .requirements-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.11vw;
+        }
+
+        .search-container {
+            .search-bar-container {
+                width: fit-content;
+                padding: 8px;
+            }
+        }
+
+        .presents-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+
+            .title {
+                width: 100%;
+                text-align: center;
+            }
+
+            .list-item {
+                border-radius: 8px;
+                height: fit-content;
+                padding: 8px;
+                background-color: rgba($color: var.$primary, $alpha: 0.1);
+                font-weight: 500;
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+@use "../../assets/styles/variables.scss" as var;
+
+.menu-modal {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+
+    min-width: 290px;
+    max-width: 420px;
+    height: fit-content;
+    width: fit-content;
+    padding: 8px 0;
+    background-color: #ffffff;
+    border-radius: var.$sm-border-radius;
+
+    box-shadow: 2px 8px 20px rgba($color: #000000, $alpha: 0.5);
+}

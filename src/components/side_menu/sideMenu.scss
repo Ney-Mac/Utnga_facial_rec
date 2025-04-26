@@ -1,0 +1,29 @@
+@use "../../assets/styles/variables.scss" as var;
+
+.side-menu {
+    grid-row: 1/-1;
+    background-color: #FFFFFF;
+    border-right: 1px solid rgba($color: var.$primary, $alpha: 0.1);
+    overflow: hidden;
+
+    .menu-title {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0;
+        padding-left: 1rem;
+        gap: 8px;
+        white-space: nowrap;
+        color: var.$primary;
+
+        #logo {
+            width: 48px;
+            object-fit: cover;
+        }
+    }
+
+    .menu-nav {
+        .menu-ul {
+            list-style: none;
+        }
+    }
+}

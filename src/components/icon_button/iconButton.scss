@@ -1,0 +1,28 @@
+@use "../../assets//styles/variables.scss" as var;
+
+.icon-button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding: 6px;
+    border-radius: var.$sm-border-radius;
+    font-weight: bold;
+    position: relative;
+
+    &.active {
+        background-color: var.$light-grey;
+    }
+
+    #icon {
+        height: var.$icon-size;
+        width: var.$icon-size;
+    }
+
+    &:hover {
+        background-color: var.$light-grey;
+    }
+}

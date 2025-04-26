@@ -1,0 +1,30 @@
+@use '../../assets/styles/variables.scss' as var;
+
+.button {
+    width: fit-content;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+
+    &.contained {
+        background-color: var.$primary;
+        color: #fff;
+
+        &:hover {
+            background-color: rgba($color: var.$primary, $alpha: 0.5);
+        }
+    }
+
+    &.cancel {
+        background-color: var.$red;
+        color: #fff;
+    }
+
+    &.outlined {
+        background-color: transparent;
+        border: 2px solid var.$primary;
+        color: var.$primary;
+    }
+}

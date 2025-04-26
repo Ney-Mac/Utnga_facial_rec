@@ -1,0 +1,14 @@
+@use '../../assets/styles/variables.scss' as var;
+
+.class-list-row {
+    flex: 1;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: rgba($color: var.$primary, $alpha: 0.1);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    .item {
+        font-size: 16px;
+    }
+}

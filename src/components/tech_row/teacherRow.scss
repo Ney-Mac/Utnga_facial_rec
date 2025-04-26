@@ -1,0 +1,47 @@
+@use '../../assets/styles/variables.scss' as var;
+
+.teacher-container-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.22vw;
+    box-shadow: 1px 1px 5px 0px rgba($color: var.$secondary, $alpha: 0.5);
+    padding: 1.11vw;
+    border-radius: 8px;
+
+    .left {
+        .name {
+            font-size: 12px;
+
+            span {
+                font-size: 16px;
+                font-weight: bold;
+            }
+        }
+
+        .cause {
+            font-size: 12px;
+
+            span {
+                font-size: 16px;
+            }
+        }
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .btn-permit {
+            color: var.$secondary;
+        }
+
+        .btn-reject {
+            #icon {
+                transform: rotate(45deg);
+                color: var.$red;
+            }
+        }
+    }
+}

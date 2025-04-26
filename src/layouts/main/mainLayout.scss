@@ -1,0 +1,20 @@
+@use "../../assets/styles/variables.scss" as variables;
+
+.main-layout {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: repeat(12, 1fr);
+    background-color: variables.$background-color;
+    transition: grid-template-columns 0.3s linear;
+
+    &.collapsed {
+        grid-template-columns: 0% 100%;
+    }
+
+    .outlet {
+        grid-row: 2/-1;
+        display: flex;
+    }
+}

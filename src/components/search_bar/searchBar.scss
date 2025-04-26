@@ -1,0 +1,37 @@
+@use '../../assets/styles/variables.scss' as var;
+
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    gap: 4px;
+    padding: 0 4px;
+    border: 1px solid rgba($color: #000000, $alpha: 0.1);
+    cursor: text;
+
+    &:focus-within {
+        border-color: var.$primary;
+
+        .search-icon {
+            color: var.$primary;
+        }
+    }
+
+    .search-icon {
+        height: var.$icon-size;
+        width: var.$icon-size;
+        color: rgba($color: #000000, $alpha: 0.7);
+    }
+
+    .search-input {
+        border: none;
+        flex: 1;
+        height: 100%;
+        background-color: transparent;
+
+        &:focus {
+            outline: none;
+        }
+    }
+}
