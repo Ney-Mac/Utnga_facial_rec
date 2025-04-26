@@ -27,7 +27,7 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
             if (res) {
                 setUser(res);
             }
-        }catch(error){
+        } catch (error) {
             console.log(`onFirstLog Error: ${error}`);
         }
     }
@@ -35,7 +35,7 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
     const login = async () => {
 
     }
-    
+
     return (
         <AuthContext.Provider
             value={{
