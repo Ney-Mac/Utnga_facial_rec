@@ -6,3 +6,4 @@ export { default as TextInput } from './text_input/TextInput';
 export { default as NotificationRow } from './tech_row/TeacherRow';
 export { default as ModalAdm } from './modal_adm/Modal';
 export { default as Schedule } from './schedule/Schedule';
+export { default as Table } from './table/Table';

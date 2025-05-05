@@ -1,3 +1,16 @@
 .profs-admin {
-    background-color: transparent;
+    flex: 1;
+    padding: 1rem;
+
+    .head-bar {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 4vw;
+
+        .head-btn-container {
+            display: flex;
+            gap: 1.11vw;
+        }
+    }
 }
