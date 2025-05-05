@@ -43,7 +43,7 @@ function ApplyContext() {
 
     if (!user) return (<RouterProvider router={generalRoutes} />);
 
-    const { type, id } = user;
+    const { tipo, id } = user;
 
     const admDashboardRoutes = createBrowserRouter([
         {
@@ -83,7 +83,7 @@ function ApplyContext() {
         },
     ]);
 
-    const route = type === 'adm' ? admDashboardRoutes : type === 'studant' ? studantRoutes : profDashboardRoutes;
+    const route = tipo === 'admin' ? admDashboardRoutes : tipo === 'aluno' ? studantRoutes : profDashboardRoutes;
 
     return <RouterProvider router={route} />
 }

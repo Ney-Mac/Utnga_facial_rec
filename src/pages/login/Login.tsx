@@ -1,10 +1,12 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useContext } from 'react';
 import Webcam from 'react-webcam';
 import { Button } from '../../components';
 import { FaUser } from "react-icons/fa";
+import { AuthContext } from '../../contexts/AuthContext';
 import './login.scss';
 
 export default function LoginAluno() {
+    const { login } = useContext(AuthContext)!;
     const webcamRef = useRef<Webcam>(null);
 
     const [isCameraOn, setIsCameraOn] = useState(false);
@@ -21,10 +23,10 @@ export default function LoginAluno() {
 
     const onCapture = useCallback(() => {
         const screenshot = webcamRef.current?.getScreenshot();
-        if (screenshot) setImage(screenshot);
-
-        // enviar imagem para reconhecimento
-        // Se reconhecido, redirecionar
+        if (screenshot) {
+            setImage(screenshot);
+            login(screenshot);
+        }
     }, [webcamRef]);
 
     return (
@@ -50,7 +52,7 @@ export default function LoginAluno() {
                 {!isCameraOn ?
                     <>
                         <Button text='Iniciar Reconhecimento' onClick={onStart} />
-                        <Button text='Solicitar Acesso' type='outlined' onClick={() => { }} />
+                        <Button text='Solicitar Acesso Especial' type='outlined' onClick={() => { }} />
                     </>
                     : <>
                         {
