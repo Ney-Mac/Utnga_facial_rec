@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { IoIosNotifications } from "react-icons/io";
 import { FaRegUserCircle } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
@@ -13,17 +11,6 @@ type Props = {
 }
 
 export function TopMenu({ handleSideMenu }: Props) {
-    const handleClickOutside = (event: MouseEvent) => {
-        if ((event.target as HTMLElement).closest('.icon-button')) {
-            console.log('Modal')
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener('click', handleClickOutside);
-        return () => document.removeEventListener('click', handleClickOutside);
-    }, []);
-
     return (
         <header className={`top-menu ${handleSideMenu ? 'space-between' : 'end'}`}>
             {

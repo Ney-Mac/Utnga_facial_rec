@@ -1,3 +1,41 @@
+@use '../../assets/styles/variables.scss' as var;
+
 .text-input-container {
-    display: flex;
+    width: 100%;
+
+    .label {
+        margin-bottom: 4px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .error-text {
+        margin-top: 4px;
+        font-size: 14px;
+        color: var.$red;
+    }
+
+    .input-container {
+        border-bottom: 1px solid rgba($color: #000000, $alpha: 0.5);
+        background-color: var.$background-color;
+        height: fit-content;
+        width: 100%;
+
+        &:focus-within {
+            border-bottom-color: var.$primary;
+            border-bottom-width: 2px;
+        }
+
+        .text-input {
+            background-color: transparent;
+            border: none;
+            width: 100%;
+            height: 48px;
+            padding-left: 8px;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
 }

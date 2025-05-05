@@ -1,0 +1,159 @@
+@use '../../assets/styles/variables.scss' as var;
+
+.modal-papper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+
+    .modal-container {
+        display: flex;
+        height: 70vh;
+        width: 80vw;
+        background-color: #fff;
+        flex-wrap: wrap;
+
+        .legendas {
+            flex: 1;
+            background-color: var.$background-color;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-direction: column;
+
+            p {
+                font-size: 16px;
+                font-weight: 500;
+
+                span {
+                    font-weight: 400;
+                    font-size: 18px;
+                }
+            }
+        }
+
+        .modal-content-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 1.11vw;
+
+            .stepper {
+                display: flex;
+                min-width: 288px;
+                margin-bottom: 16px;
+                gap: 4px;
+
+                .num-container {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+
+                    &.after {
+                        flex: 1;
+
+                        &::after {
+                            content: "";
+                            flex: 1;
+                            height: 2px;
+                            background-color: var.$background-color;
+                            top: 50%;
+                        }
+
+                        &.next {
+                            &::after {
+                                background-color: var.$primary;
+                            }
+                        }
+                    }
+
+                    &.active {
+                        .number {
+                            background-color: var.$primary;
+
+                            p {
+                                color: #fff;
+                            }
+
+                            .number-icon {
+                                color: #fff;
+                            }
+                        }
+                    }
+
+                    .number {
+                        border-radius: 50%;
+                        height: 32px;
+                        width: 32px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: var.$background-color;
+
+                        p {
+                            color: #000000;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+
+            .pages {
+                width: fit-content;
+                min-width: 288px;
+
+                .page {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 32px;
+
+                    &.hide {
+                        display: none;
+                    }
+
+                    .schedule-error {
+                        color: var.$red;
+                        font-size: 16px;
+                    }
+                }
+
+                .info-page {
+                    gap: 16px;
+
+                    .days {
+                        width: 100%;
+                    }
+
+                    p {
+                        font-size: 16px;
+                        font-weight: 400;
+                        width: 100%;
+
+                        span {
+                            font-size: 18px;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+
+            .btn-container {
+                min-width: 288px;
+                display: flex;
+                justify-content: space-between;
+                margin-top: 32px;
+            }
+        }
+    }
+}

@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+// import axios from "axios";
 
 type Props = {
     onFirstLoad: () => void;
@@ -18,7 +19,7 @@ type UserType = null | {
 export const AuthContext = createContext<Props | null>(null);
 
 export const AuthContextProvider = ({ children }: ProviderProps) => {
-    const [user, setUser] = useState<UserType>(null);
+    const [user, setUser] = useState<UserType>({ type: 'adm', id: 123 });
 
     const onFirstLoad = () => {
         try {

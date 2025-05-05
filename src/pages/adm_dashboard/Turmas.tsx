@@ -1,8 +1,11 @@
+import { useState } from 'react';
+
 import {
     DayCard,
     SearchBar,
     Button,
     ClassListRow,
+    ModalAdm,
 } from '../../components';
 
 import './turmas.scss';
@@ -21,6 +24,8 @@ const turmas = [
 ]
 
 const Home = () => {
+    const [showModal, setShowModal] = useState(false);
+
     return (
         <main className="home">
             <div className="row-day-card">
@@ -31,9 +36,9 @@ const Home = () => {
 
             <div className="row-search-btn">
                 <SearchBar
-                    placeholder='Turma'
+                    placeholder='Turma, sala'
                 />
-                <Button text='Adicionar Turma' onClick={() => { }} />
+                <Button text='Adicionar Turma' onClick={() => { setShowModal(true) }} />
             </div>
 
             <div className="class-list">
@@ -54,6 +59,11 @@ const Home = () => {
                     />
                 ))}
             </div>
+
+            <ModalAdm
+                show={showModal}
+                setShow={setShowModal}
+            />
         </main>
     )
 }
