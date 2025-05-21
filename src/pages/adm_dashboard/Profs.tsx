@@ -1,20 +1,50 @@
+import { useState, useContext, useEffect } from 'react';
 import {
     Button,
     SearchBar,
     Table,
 } from '../../components'
 import './profs.scss';
-
-const header = ['Id', 'Nome', 'Número de funcionário', 'Tipo', 'Nivel/Departamento'];
-
-const body = [
-    { id: 1, nome: "Mestre", codigoAcesso: 'mestre1', tipo: 'adm', nivel: 'mestre' },
-    { id: 2, nome: "Prof", codigoAcesso: 'prof1', tipo: 'prof', departamento: 'Engenharias' },
-    { id: 4, nome: "Master", codigoAcesso: 'master1', tipo: 'adm', nivel: 'base' },
-    { id: 7, nome: "Teacher", codigoAcesso: 'teacher1', tipo: 'prof', nivel: 'Sociais' },
-]
+import { LoadContext } from '../../contexts/LoadContext';
+import { API_URL } from '../../settings';
+import axios from 'axios';
+import { UserType } from '../../utils/UserType';
 
 export default function ProfsAdmin() {
+    const { setIsLoading } = useContext(LoadContext);
+
+    const [keys, setKeys] = useState<string[]>([]);
+    const [users, setUsers] = useState<UserType[]>([]);
+
+    const fetchUsers = async () => {
+        try {
+            setIsLoading?.(true);
+            const res_adm = await axios.get<UserType[]>(`${API_URL}usuario/`, {
+                params: {
+                    tipo: 'adm'
+                }
+            });
+
+            const res_prof = await axios.get<UserType[]>(`${API_URL}usuario/`, {
+                params: {
+                    tipo: 'prof'
+                }
+            });
+
+            setKeys(Object.keys(res_prof.data))
+            setUsers([...res_adm.data, ...res_prof.data]);
+        } catch (error) {
+            console.log(`Erro ao buscar alunos: ${error}`)
+        } finally {
+            setIsLoading?.(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+
     return (
         <main className="profs-admin">
             <div className="head-bar">
@@ -38,17 +68,20 @@ export default function ProfsAdmin() {
                 </div>
             </div>
 
-            <div className="studant-table">
-                <Table
-                    header={header}
-                    body={body}
-                    renderRow={(item) => <>
-                        {Object.values(item).map((itemValue) => (
-                            <p className="item">{itemValue}</p>
-                        ))}
-                    </>}
-                />
-            </div>
+            {users.length ?
+                <div className="studant-table">
+                    <Table
+                        header={keys}
+                        body={users}
+                        renderRow={(item) => <>
+                            {Object.values(item).map((itemValue) => (
+                                <p className="item">{itemValue}</p>
+                            ))}
+                        </>}
+                    />
+                </div>
+                : <p className="err">Nenhum usuario encontrado.</p>
+            }
         </main>
     )
 }
