@@ -30,6 +30,13 @@ export default function ModalAddAluno({ show, setShow }: Props) {
     const { setIsLoading } = useContext(LoadContext);
 
     const onClose = () => {
+        setNome({ value: '', error: '' });
+        setMatricula({ value: '', error: '' })
+        setAnoLetivo({ value: '', error: '' })
+        setCurso({ value: '', error: '' })
+        setTurma({ value: '', error: '' })
+        setResponseError('');
+
         setShow(false);
     }
 
@@ -79,8 +86,12 @@ export default function ModalAddAluno({ show, setShow }: Props) {
             console.log('Aluno registrado!', res.data);
             setShow(false);
         } catch (error: any) {
-            console.log(`Erro ao registrar aluno: ${error}`)
-            setResponseError(error.response.data.message)
+            console.log(`Erro ao registrar aluno: ${error}`);
+            if(error.response.status <= 500) {
+                setResponseError(error.response.data.message)
+            } else {
+                setResponseError("Opps! Ocorreu algum erro.")
+            }
         } finally {
             setIsLoading?.(false);
         }

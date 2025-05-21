@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { Outlet } from "react-router-dom";
+import { Loader } from "../../components";
 
 import { SideMenu } from "../../components/side_menu/SideMenu";
 import { TopMenu } from "../../components/top_menu/TopMenu";
@@ -16,6 +17,7 @@ export default () => {
 
     return (
         <div className={`main-layout ${showSideMenu ? '' : 'collapsed'}`}>
+            <Loader />            
             <SideMenu />
             <TopMenu handleSideMenu={toggleSideMenu} />
             <div className="outlet">

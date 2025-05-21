@@ -6,7 +6,7 @@ import { LoadContextProvider } from './contexts/LoadContext';
 import './App.scss';
 
 const MainLayout = lazy(() => import("./layouts/main/MainLayout"));
-const AdmTurmas = lazy(() => import("./pages/adm_dashboard/Turmas"));
+// const AdmTurmas = lazy(() => import("./pages/adm_dashboard/Turmas"));
 const AdmAlunos = lazy(() => import("./pages/adm_dashboard/Alunos"));
 const AdmProfs = lazy(() => import("./pages/adm_dashboard/Profs"));
 
@@ -53,11 +53,11 @@ function ApplyContext() {
             path: '/',
             element: <MainLayout />,
             children: [
-                { path: `/adm/turmas`, element: <AdmTurmas /> },
+                // { path: `/adm/turmas`, element: <AdmTurmas /> },
                 { path: `/adm/alunos`, element: <AdmAlunos /> },
                 { path: `/adm/profs`, element: <AdmProfs /> },
-                { path: '/', element: <Navigate to={`/adm/turmas`} replace /> },
-                { path: '/*', element: <Navigate to={`/adm/turmas`} replace /> },
+                { path: '/', element: <Navigate to={`/adm/alunos`} replace /> },
+                { path: '/*', element: <Navigate to={`/adm/alunos`} replace /> },
             ]
         }
     ]);
