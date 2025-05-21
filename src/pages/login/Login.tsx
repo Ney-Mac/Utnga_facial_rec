@@ -6,10 +6,10 @@ import { AuthContext } from '../../contexts/AuthContext';
 import './login.scss';
 
 export default function LoginAluno() {
-    const { login } = useContext(AuthContext)!;
+    const { login, responseError, setResponseError } = useContext(AuthContext)!;
     const webcamRef = useRef<Webcam>(null);
 
-    const [isCameraOn, setIsCameraOn] = useState(false);
+    const [isCameraOn, setIsCameraOn] = useState(true);
     const [image, setImage] = useState<string | null>(null);
 
     const onStart = () => {
@@ -22,6 +22,7 @@ export default function LoginAluno() {
     }
 
     const onCapture = useCallback(() => {
+        setResponseError(null);
         const screenshot = webcamRef.current?.getScreenshot();
         if (screenshot) {
             setImage(screenshot);
@@ -32,6 +33,7 @@ export default function LoginAluno() {
     return (
         <main className="login-container">
             <h1 className='login-title'>Verifique sua identidade</h1>
+            {responseError && <p className="response-error">Ocorreu uma falha: {responseError}</p>}
 
             <div className="camera-container">
                 {
@@ -57,7 +59,7 @@ export default function LoginAluno() {
                     : <>
                         {
                             !image ? <Button text='Capturar' onClick={onCapture} />
-                            : <Button text='Tirar Outra' onClick={() => { setImage(null) }} />
+                                : <Button text='Tirar Outra' onClick={() => { setImage(null) }} />
                         }
                         <Button text='Cancelar' type='cancel' onClick={onCancel} />
                     </>

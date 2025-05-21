@@ -19,6 +19,7 @@ export default function ProfsAdmin() {
         <main className="profs-admin">
             <div className="head-bar">
                 <SearchBar
+                    onSearch={() => { }}
                     placeholder='Nome, número funcionário'
                 />
 

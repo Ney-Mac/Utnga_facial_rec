@@ -1,6 +1,7 @@
 import { lazy, Suspense, useContext } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { AuthContextProvider, AuthContext } from './contexts/AuthContext';
+import { LoadContextProvider } from './contexts/LoadContext';
 
 import './App.scss';
 
@@ -19,9 +20,11 @@ const Login = lazy(() => import("./pages/login/Login"));
 function App() {
     return (
         <Suspense>
-            <AuthContextProvider>
-                <ApplyContext />
-            </AuthContextProvider>
+            <LoadContextProvider>
+                <AuthContextProvider>
+                    <ApplyContext />
+                </AuthContextProvider>
+            </LoadContextProvider>
         </Suspense>
     )
 }
@@ -41,20 +44,20 @@ function ApplyContext() {
         }
     ]);
 
-    if (!user) return (<RouterProvider router={generalRoutes} />);
+    if (!user) return (<RouterProvider router={generalRoutes} key="guest" />);
 
-    const { tipo, id } = user;
+    const { tipo } = user;
 
     const admDashboardRoutes = createBrowserRouter([
         {
             path: '/',
             element: <MainLayout />,
             children: [
-                { path: `/adm/${id}/turmas`, element: <AdmTurmas /> },
-                { path: `/adm/${id}/alunos`, element: <AdmAlunos /> },
-                { path: `/adm/${id}/profs`, element: <AdmProfs /> },
-                { path: '/', element: <Navigate to={`/adm/${id}/turmas`} replace /> },
-                { path: '/*', element: <Navigate to={`/adm/${id}/turmas`} replace /> },
+                { path: `/adm/turmas`, element: <AdmTurmas /> },
+                { path: `/adm/alunos`, element: <AdmAlunos /> },
+                { path: `/adm/profs`, element: <AdmProfs /> },
+                { path: '/', element: <Navigate to={`/adm/turmas`} replace /> },
+                { path: '/*', element: <Navigate to={`/adm/turmas`} replace /> },
             ]
         }
     ]);
@@ -64,9 +67,9 @@ function ApplyContext() {
             path: '/',
             element: <Layout />,
             children: [
-                { path: '/', element: <Navigate to={`/${id}`} replace /> },
-                { path: `/${id}`, element: <StudantWelcomePage /> },
-                { path: '/*', element: <Navigate to={`/${id}`} replace /> }
+                { path: '/', element: <Navigate to={`/`} replace /> },
+                { path: `/`, element: <StudantWelcomePage /> },
+                { path: '/*', element: <Navigate to={`/`} replace /> }
             ]
         }
     ]);
@@ -76,16 +79,16 @@ function ApplyContext() {
             path: '/',
             element: <Layout />,
             children: [
-                { path: '/', element: <Navigate to={`/prof/${id}`} replace /> },
-                { path: `/prof/${id}`, element: <TeacherDashboard /> },
-                { path: '/*', element: <Navigate to={`/prof/${id}`} replace /> }
+                { path: '/', element: <Navigate to={`/prof/`} replace /> },
+                { path: `/prof/`, element: <TeacherDashboard /> },
+                { path: '/*', element: <Navigate to={`/prof/`} replace /> }
             ]
         },
     ]);
 
-    const route = tipo === 'admin' ? admDashboardRoutes : tipo === 'aluno' ? studantRoutes : profDashboardRoutes;
+    const route = tipo === 'adm' ? admDashboardRoutes : tipo === 'aluno' ? studantRoutes : profDashboardRoutes;
 
-    return <RouterProvider router={route} />
+    return <RouterProvider router={route} key={user.tipo} />
 }
 
 export default App

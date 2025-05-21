@@ -1,16 +1,12 @@
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
 import { MenuItem } from "../menu_ul_item/MenuItem";
 import Logo from '../../assets/images/logo/logo_utanga.png';
 import './sideMenu.scss';
 
 export function SideMenu() {
-    const { user } = useContext(AuthContext)!;
-
     const links = [
-        { to: `/adm/${user?.id}/turmas`, text: 'Turmas' },
-        { to: `/adm/${user?.id}/alunos`, text: 'Alunos' },
-        { to: `/adm/${user?.id}/profs`, text: 'Professores e Administradores' },
+        { to: `/adm/turmas`, text: 'Turmas' },
+        { to: `/adm/alunos`, text: 'Alunos' },
+        { to: `/adm/profs`, text: 'Professores e Administradores' },
     ]
 
     return (

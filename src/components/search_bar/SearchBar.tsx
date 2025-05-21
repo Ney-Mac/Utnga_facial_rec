@@ -3,9 +3,10 @@ import './searchBar.scss';
 
 type Props = {
     placeholder: string;
+    onSearch: () => void;
 }
 
-const SearchBar = ({ placeholder }: Props) => {
+const SearchBar = ({ placeholder, onSearch }: Props) => {
     return (
         <div className="search-bar-container">
             <CiSearch className="search-icon" />

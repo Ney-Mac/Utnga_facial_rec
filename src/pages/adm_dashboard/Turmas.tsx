@@ -37,6 +37,7 @@ const Home = () => {
             <div className="row-search-btn">
                 <SearchBar
                     placeholder='Turma, sala'
+                    onSearch={() => { }}
                 />
                 <Button text='Adicionar Turma' onClick={() => { setShowModal(true) }} />
             </div>

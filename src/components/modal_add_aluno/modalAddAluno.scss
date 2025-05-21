@@ -1,0 +1,46 @@
+@use '../../assets/styles/variables.scss' as var;
+
+.modal-add-aluno {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: space-between;
+        height: fit-content;
+        width: 80vw;
+        background-color: #fff;
+        flex-wrap: wrap;
+        padding: 1.11vw;
+        gap: 16px;
+        border-radius: 8px;
+
+        .response-error {
+            color: var.$red;
+            grid-column: 1/-1;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .row {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+            justify-content: space-around;
+
+            @media screen and (max-width: 600px) {
+                flex-wrap: wrap;
+            }
+        }
+    }
+}

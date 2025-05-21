@@ -1,45 +1,57 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
+import { LoadContext } from "./LoadContext";
 import axios from "axios";
+import { UserType } from "../utils/UserType";
 
 type Props = {
     onFirstLoad: () => void;
-    user: UserType;
+    onLogout: () => void; 
+    user: UserType | null;
     login: (image: string) => void;
+    responseError: string | null;
+    setResponseError: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 type ProviderProps = {
     children: React.ReactNode;
 }
 
-// type UserType = null | {
-//     type: 'studant' | 'teacher' | 'adm';
-//     id: number;
-// }
-
-type UserType = null | {
-    id: number;
-    nome: string;
-    tipo: 'admin' | 'aluno' | 'professor';
-    codigoAcesso: string;
-    curso: string | null;
-    departamento: string | null;
-    nivel: string | null;
-}
-
 export const AuthContext = createContext<Props | null>(null);
 
 export const AuthContextProvider = ({ children }: ProviderProps) => {
-    const [user, setUser] = useState<UserType>(null);
+    const [user, setUser] = useState<UserType | null>(null);
+    const [responseError, setResponseError] = useState<string | null>(null);
+    const { setIsLoading } = useContext(LoadContext);
+
+    useEffect(() => { setResponseError(null) }, [])
+
+    useEffect(() => {
+        onFirstLoad()
+        // onLogout()
+    }, []);
+
+    const onLogout = () => {
+        try {
+            localStorage.removeItem('user');
+        } catch (error) {
+            console.log(`onLogout Error: ${error}`);
+        } finally {
+            setIsLoading?.(false);
+        }
+    }
 
     const onFirstLoad = () => {
         try {
-            const res = localStorage.getItem('user') as UserType;
+            setIsLoading?.(true);
+            const res = localStorage.getItem('user');
 
             if (res) {
-                setUser(res);
+                setUser(JSON.parse(res) as UserType);
             }
         } catch (error) {
             console.log(`onFirstLog Error: ${error}`);
+        } finally {
+            setIsLoading?.(false);
         }
     }
 
@@ -58,29 +70,38 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
 
         const formData = new FormData();
         formData.append('image', file);
+        // formData.append('id_turma', '1')
 
         try {
-            const response = await axios.post('http://localhost:8000/login/', formData, {
+            setIsLoading?.(true);
+            const response = await axios.post('http://localhost:8000/usuario/logar', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
             });
 
-            console.log(response.data.message);
+            localStorage.setItem('user', JSON.stringify(response.data.user))
+
+            console.log(response.data);
             setUser(response.data.user);
 
-            localStorage.setItem('user', response.data.user)
-        } catch (error) {
-            console.log('Erro ao fazer login: ', error);
+        } catch (error: any) {
+            console.log('Erro ao fazer login: ', error.response.data.message);
+            setResponseError(error.response.data.message)
+        } finally {
+            setIsLoading?.(false);
         }
     }
 
     return (
         <AuthContext.Provider
             value={{
-                onFirstLoad,
                 user,
-                login
+                responseError,
+                login,
+                onLogout,
+                onFirstLoad,
+                setResponseError
             }}
         >{children}</AuthContext.Provider>
     )

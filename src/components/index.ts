@@ -7,3 +7,6 @@ export { default as NotificationRow } from './tech_row/TeacherRow';
 export { default as ModalAdm } from './modal_adm/Modal';
 export { default as Schedule } from './schedule/Schedule';
 export { default as Table } from './table/Table';
+export { default as Loader } from './Loader/Loader';
+export { default as ModalAddAluno } from './modal_add_aluno/ModalAddAluno';
+export { default as InputFile } from './input_file/InputFile';
