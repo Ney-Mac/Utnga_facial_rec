@@ -31,10 +31,12 @@ export default function ProfsAdmin() {
                 }
             });
 
+            console.log([...res_adm.data, ...res_prof.data])
+
             setKeys(Object.keys(res_prof.data))
             setUsers([...res_adm.data, ...res_prof.data]);
         } catch (error) {
-            console.log(`Erro ao buscar alunos: ${error}`)
+            console.log(`Erro ao buscar usuarios: ${error}`)
         } finally {
             setIsLoading?.(false);
         }
