@@ -27,12 +27,13 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
 
     useEffect(() => {
         onFirstLoad()
-        // onLogout()
     }, []);
 
     const onLogout = () => {
         try {
+            setIsLoading?.(true);
             localStorage.removeItem('user');
+            setUser(null);
         } catch (error) {
             console.log(`onLogout Error: ${error}`);
         } finally {

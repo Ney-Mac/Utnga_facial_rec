@@ -1,9 +1,10 @@
-import { IoIosNotifications } from "react-icons/io";
-import { FaRegUserCircle } from "react-icons/fa";
-import { CiMenuBurger } from "react-icons/ci";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 import { IconButton } from "../icon_button/IconButton";
+import { Button } from '../';
 
+import { CiMenuBurger } from "react-icons/ci";
 import './topMenu.scss';
 
 type Props = {
@@ -11,6 +12,8 @@ type Props = {
 }
 
 export function TopMenu({ handleSideMenu }: Props) {
+    const { onLogout } = useContext(AuthContext)!;
+
     return (
         <header className={`top-menu ${handleSideMenu ? 'space-between' : 'end'}`}>
             {
@@ -23,14 +26,10 @@ export function TopMenu({ handleSideMenu }: Props) {
             }
 
             <div className="user-data">
-                <IconButton
-                    Icon={IoIosNotifications}
-                    dropContent={<h1>Teste 2</h1>}
-                />
-                <IconButton
-                    Icon={FaRegUserCircle}
-                    text="Deensel Whashington"
-                    dropContent={<h1>Teste</h1>}
+                <Button
+                    text="Sair"
+                    type="cancel"
+                    onClick={onLogout}
                 />
             </div>
         </header>
