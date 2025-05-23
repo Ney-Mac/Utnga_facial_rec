@@ -3,6 +3,7 @@ import {
     Button,
     SearchBar,
     Table,
+    ModalAddAluno,
 } from '../../components'
 import './profs.scss';
 import { LoadContext } from '../../contexts/LoadContext';
@@ -15,6 +16,9 @@ export default function ProfsAdmin() {
 
     const [keys, setKeys] = useState<string[]>([]);
     const [users, setUsers] = useState<UserType[]>([]);
+
+    const [showModal, setShowModal] = useState(false);
+    const [idLabel, setIdLabel] = useState<'Professor' | 'Administrador'>('Professor')
 
     const fetchUsers = async () => {
         try {
@@ -31,10 +35,8 @@ export default function ProfsAdmin() {
                 }
             });
 
-            console.log([...res_adm.data, ...res_prof.data])
-
             setKeys(Object.keys(res_adm.data[0]))
-            setUsers([...res_adm.data, ...res_prof.data]);
+            setUsers([...res_adm.data, ...res_prof.data]); //.filter((user) => (Object.values(user).filter(campo => campo !== '')))
         } catch (error) {
             console.log(`Erro ao buscar usuarios: ${error}`)
         } finally {
@@ -43,29 +45,36 @@ export default function ProfsAdmin() {
     }
 
     useEffect(() => {
-        fetchUsers();
-    }, []);
+        if (!showModal) fetchUsers();
+    }, [showModal]);
 
 
     return (
         <main className="profs-admin">
+            <ModalAddAluno
+                show={showModal}
+                setShow={setShowModal}
+                idLabel={idLabel}
+            />
+
             <div className="head-bar">
                 <SearchBar
                     onSearch={() => { }}
                     placeholder='Nome, número funcionário'
+                    label='Pesquisar por:'
                 />
 
                 <div className="head-btn-container">
                     <Button
                         text='Adicionar professor'
                         type='contained'
-                        onClick={() => { }}
+                        onClick={() => { setShowModal(true); setIdLabel('Professor') }}
                     />
 
                     <Button
                         text='Adicionar administrador'
                         type='outlined'
-                        onClick={() => { }}
+                        onClick={() => { setShowModal(true); setIdLabel('Administrador') }}
                     />
                 </div>
             </div>

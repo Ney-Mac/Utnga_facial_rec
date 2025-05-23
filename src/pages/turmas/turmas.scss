@@ -1,0 +1,49 @@
+@use '../../assets/styles/variables.scss' as var;
+
+.turmas-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    .text-title {
+        font-size: 24px;
+        padding: 12px 0;
+    }
+
+    .turmas-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 200px;
+        padding: 2.22vw;
+        gap: 1.11vw;
+
+        .btn-turma {
+            cursor: pointer;
+            border: none;
+            height: 100%;
+            width: 100%;
+            background-color: var.$primary;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #fff;
+
+            &:hover {
+                background-color: var.$secondary;
+            }
+
+            .text {
+                font-size: 18px;
+
+                .span {
+                    font-size: 24px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

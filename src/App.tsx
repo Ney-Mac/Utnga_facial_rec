@@ -6,7 +6,7 @@ import { LoadContextProvider } from './contexts/LoadContext';
 import './App.scss';
 
 const MainLayout = lazy(() => import("./layouts/main/MainLayout"));
-// const AdmTurmas = lazy(() => import("./pages/adm_dashboard/Turmas"));
+const AdmPainel = lazy(() => import("./pages/adm_dashboard/Painel"));
 const AdmAlunos = lazy(() => import("./pages/adm_dashboard/Alunos"));
 const AdmProfs = lazy(() => import("./pages/adm_dashboard/Profs"));
 
@@ -16,6 +16,8 @@ const StudantWelcomePage = lazy(() => import("./pages/studant/WelcomePage"));
 
 const Layout = lazy(() => import("./layouts/login/LoginLayout"));
 const Login = lazy(() => import("./pages/login/Login"));
+
+const Turma = lazy(() => import("./pages/turmas/Turmas"));
 
 function App() {
     return (
@@ -37,9 +39,10 @@ function ApplyContext() {
             path: '/',
             element: <Layout />,
             children: [
+                { path: '/aceder-turma', element: <Turma /> },
                 { path: '/login', element: <Login /> },
-                { path: '/', element: <Navigate to='/login' replace /> },
-                { path: '/*', element: <Navigate to='/login' replace /> },
+                { path: '/', element: <Navigate to='/aceder-turma' replace /> },
+                { path: '/*', element: <Navigate to='/aceder-turma' replace /> },
             ]
         }
     ]);
@@ -53,11 +56,11 @@ function ApplyContext() {
             path: '/',
             element: <MainLayout />,
             children: [
-                // { path: `/adm/turmas`, element: <AdmTurmas /> },
+                { path: `/adm/painel`, element: <AdmPainel /> },
                 { path: `/adm/alunos`, element: <AdmAlunos /> },
                 { path: `/adm/profs`, element: <AdmProfs /> },
-                { path: '/', element: <Navigate to={`/adm/alunos`} replace /> },
-                { path: '/*', element: <Navigate to={`/adm/alunos`} replace /> },
+                { path: '/', element: <Navigate to={`/adm/painel`} replace /> },
+                { path: '/*', element: <Navigate to={`/adm/painel`} replace /> },
             ]
         }
     ]);
@@ -85,8 +88,8 @@ function ApplyContext() {
             ]
         },
     ]);
-
-    const route = tipo === 'adm' ? admDashboardRoutes : tipo === 'aluno' ? studantRoutes : profDashboardRoutes;
+    
+    const route = tipo === 'adm' ? admDashboardRoutes : tipo === 'estudante' ? studantRoutes : profDashboardRoutes;
 
     return <RouterProvider router={route} key={user.tipo} />
 }

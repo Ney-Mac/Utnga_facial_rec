@@ -3,6 +3,8 @@ import { LoadContext } from "./LoadContext";
 import axios from "axios";
 import { UserType } from "../utils/UserType";
 
+import { API_URL } from "../settings";
+
 type Props = {
     onFirstLoad: () => void;
     onLogout: () => void; 
@@ -10,10 +12,17 @@ type Props = {
     login: (image: string) => void;
     responseError: string | null;
     setResponseError: React.Dispatch<React.SetStateAction<string | null>>;
+    selectedTurma: string;
+    setSelectedTurma: React.Dispatch<React.SetStateAction<string>>;
 }
 
 type ProviderProps = {
     children: React.ReactNode;
+}
+
+type LoginResponse = {
+    message: string;
+    user: UserType;
 }
 
 export const AuthContext = createContext<Props | null>(null);
@@ -23,10 +32,12 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
     const [responseError, setResponseError] = useState<string | null>(null);
     const { setIsLoading } = useContext(LoadContext);
 
+    const [selectedTurma, setSelectedTurma] = useState('');
+
     useEffect(() => { setResponseError(null) }, [])
 
     useEffect(() => {
-        onFirstLoad()
+        if(!user) onFirstLoad()
     }, []);
 
     const onLogout = () => {
@@ -71,19 +82,19 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
 
         const formData = new FormData();
         formData.append('image', file);
-        // formData.append('id_turma', '1')
+        formData.append('id_turma_destino', selectedTurma)
 
         try {
             setIsLoading?.(true);
-            const response = await axios.post('http://localhost:8000/usuario/logar', formData, {
+            const response = await axios.post<LoginResponse>(`${API_URL}usuario/logar`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
             });
 
-            localStorage.setItem('user', JSON.stringify(response.data.user))
+            console.log(response.data.user)
 
-            console.log(response.data);
+            localStorage.setItem('user', JSON.stringify(response.data.user))
             setUser(response.data.user);
 
         } catch (error: any) {
@@ -102,7 +113,9 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
                 login,
                 onLogout,
                 onFirstLoad,
-                setResponseError
+                setResponseError,
+                selectedTurma,
+                setSelectedTurma
             }}
         >{children}</AuthContext.Provider>
     )

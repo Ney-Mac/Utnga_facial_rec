@@ -11,7 +11,7 @@ export default function Table<T>({ header, body, renderRow }: Props<T>) {
         <div className="table">
             <div className="header">
                 {header.map((cell, index) => (
-                    <p key={index} className="header-cell">{cell}</p>
+                    <p key={index} className="header-cell">{cell.toUpperCase()}</p>
                 ))}
             </div>
             <div className="body">

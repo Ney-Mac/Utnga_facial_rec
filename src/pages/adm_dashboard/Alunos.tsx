@@ -24,10 +24,10 @@ export default function AlunosAdmin() {
             setIsLoading?.(true);
             const res = await axios.get<UserType[]>(`${API_URL}usuario/`, {
                 params: {
-                    tipo: 'aluno'
+                    tipo: 'estudante'
                 }
             });
-
+            
             setKeys(Object.keys(res.data[0]))
             setAlunos(res.data);
         } catch (error) {
@@ -48,6 +48,7 @@ export default function AlunosAdmin() {
             <ModalAddAluno
                 show={showModal}
                 setShow={setShowModal}
+                idLabel="Aluno"
             />
 
             <div className="head-bar">
@@ -56,7 +57,7 @@ export default function AlunosAdmin() {
                     placeholder='Pesquisar aluno por id'
                 />
                 <Button
-                    text='Adicionar aluno'
+                    text='Adicionar dados faciais do aluno'
                     type='contained'
                     onClick={() => { setShowModal(!showModal) }}
                 />
