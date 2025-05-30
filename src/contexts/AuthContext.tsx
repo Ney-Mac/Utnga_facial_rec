@@ -14,7 +14,10 @@ type Props = {
     login: (image: string) => void;
 
     message: string;
-    acessoEspecialDisponivel: string | undefined; 
+    setMessage: React.Dispatch<React.SetStateAction<string>>;
+
+    acessoEspecialDisponivel: string | undefined;
+    setAcessoEspecialDisponivel: React.Dispatch<React.SetStateAction<string | undefined>>;
 
     idTurmaDestino: string;
     setIdTurmaDestino: React.Dispatch<React.SetStateAction<string>>;
@@ -75,22 +78,6 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
         }
     }
 
-    const onFirstLoad = () => {
-        try {
-            setIsLoading?.(true);
-            const res = localStorage.getItem('user');
-
-            if (res) {
-                const usuario = JSON.parse(res) as UserType
-                setUser(usuario);
-            }
-        } catch (error) {
-            console.log(`onFirstLog Error: ${error}`);
-        } finally {
-            setIsLoading?.(false);
-        }
-    }
-
     const login = async (imageUrl: string) => {
         const byteString = atob(imageUrl.split(',')[1]);
         const mimeString = imageUrl.split(',')[0].split(':')[1].split(';')[0];
@@ -115,12 +102,15 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
                     'Content-Type': 'multipart/form-data',
                 }
             });
-
-            console.log(response.data)
-
             localStorage.setItem('user', JSON.stringify(response.data.user))
-            setUser(response.data.user);
+            localStorage.setItem('idTurmaDestino', JSON.stringify(idTurmaDestino));
+            localStorage.setItem('message', JSON.stringify(response.data.message));
 
+            if (response.data.acesso_especial_disponivel) {
+                localStorage.setItem('acesso_especial_disponivel', JSON.stringify(response.data.acesso_especial_disponivel))
+            }
+
+            setUser(response.data.user);
             setMessage(response.data.message);
             setAcessoEspecialDisponivel(response.data.acesso_especial_disponivel)
 
@@ -136,9 +126,44 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
         try {
             setIsLoading?.(true);
             localStorage.removeItem('user');
+            localStorage.removeItem('idTurmaDestino');
+            localStorage.removeItem('message');
+            localStorage.removeItem('acesso_especial_disponivel');
             setUser(null);
+            setIdTurmaDestino('');
         } catch (error) {
             console.log(`onLogout Error: ${error}`);
+        } finally {
+            setIsLoading?.(false);
+        }
+    }
+
+    const onFirstLoad = () => {
+        try {
+            setIsLoading?.(true);
+            const res = localStorage.getItem('user');
+            const resTurmaDestino = localStorage.getItem('idTurmaDestino');
+            const resMessage = localStorage.getItem('message');
+            const resAcesDisp = localStorage.getItem('acesso_especial_disponivel');
+
+            if (res) {
+                const usuario = JSON.parse(res) as UserType
+                setUser(usuario);
+            }
+
+            if (resTurmaDestino) {
+                setIdTurmaDestino(JSON.parse(resTurmaDestino));
+            }
+
+            if (resMessage) {
+                setMessage(JSON.parse(resMessage));
+            }
+
+            if (resAcesDisp) {
+                setAcessoEspecialDisponivel(JSON.parse(resAcesDisp));
+            }
+        } catch (error) {
+            console.log(`onFirstLog Error: ${error}`);
         } finally {
             setIsLoading?.(false);
         }
@@ -147,7 +172,6 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
     useEffect(() => {
         setResponseError(null)
         if (!user) onFirstLoad()
-        // onLogout()
     }, []);
 
     return (
@@ -160,10 +184,12 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
                 idTurmaDestino,
                 login,
                 onLogout,
+                setMessage,
                 onFirstLoad,
                 loginAdmProf,
                 setResponseError,
                 setIdTurmaDestino,
+                setAcessoEspecialDisponivel,
             }}
         >{children}</AuthContext.Provider>
     )

@@ -6,7 +6,7 @@ import './loginProfAdm.scss';
 
 export default function LoginProfAdm() {
     const { loginAdmProf, responseError } = useContext(AuthContext)!;
-    const [numFunc, setNumFunc] = useState({ value: '0001', error: '' });
+    const [numFunc, setNumFunc] = useState({ value: '004', error: '' });
     const [pass, setPass] = useState({ value: '12345', error: '' });
 
     const onLogin = () => {

@@ -6,7 +6,7 @@ export function SideMenu() {
     const links = [
         { to: `/adm/painel`, text: 'Painel de Monitoramento' },
         { to: `/adm/alunos`, text: 'Estudantes' },
-        // { to: `/adm/profs`, text: 'Professores e Administradores' },
+        // { to: `/adm/faltas`, text: 'Faltas' },
     ]
 
     return (

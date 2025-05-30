@@ -6,8 +6,13 @@ import { NotificationRow, SearchBar } from '../../components';
 import { LoadContext } from '../../contexts/LoadContext';
 import { AuthContext } from '../../contexts/AuthContext';
 
-import { API_URL } from '../../settings';
+import { API_URL, UTANGA_API } from '../../settings';
 import axios from 'axios';
+
+import { TurmaType } from '../../utils/TurmaType';
+import { UserType } from '../../utils/UserType';
+
+import { Table } from '../../components/';
 
 import './teacherDashboard.scss';
 
@@ -30,7 +35,9 @@ export default function TeacherDashboard() {
     const [search, setSearch] = useState({ value: '', error: '' });
     const [solicitacoes, setSolicitacoes] = useState<Response[]>([]);
 
-    const TIME_TO_FETCH_IN_SECONDS = 1000 * 10
+    const [alunos, setAlunos] = useState<UserType[]>([]);
+
+    const TIME_TO_FETCH_IN_SECONDS = 1000 * 60 * 1
 
     const responder = async (id_solicitacao: number, aceitar: boolean) => {
         setIsLoading?.(true);
@@ -39,19 +46,16 @@ export default function TeacherDashboard() {
                 params: { id_solicitacao, aceitar }
             });
 
-            await fetchSolicitacoes(false);
-
+            await fetchSolicitacoes();
             console.log(res.data);
         } catch (error) {
             console.log(`Erro ao ${aceitar ? 'permitir' : 'rejeitar'} acesso especial: ${error}`);
-        } finally {
             setIsLoading?.(false);
         }
     }
 
-    const fetchSolicitacoes = async (isRefresh: boolean) => {
-        if (!isRefresh) setIsLoading?.(true);
-
+    const fetchSolicitacoes = async () => {
+        setIsLoading?.(true);
         try {
             const res = await axios.get<Response[]>(`${API_URL}acesso-especial/listar`, {
                 params: {
@@ -59,8 +63,8 @@ export default function TeacherDashboard() {
                 }
             });
 
-            console.log(res.data);
-            setSolicitacoes(res.data);
+            console.log(res.data.filter((solicitacao) => solicitacao.situacao === "PENDENTE"));
+            setSolicitacoes(res.data.filter((solicitacao) => solicitacao.situacao === "PENDENTE"));
 
         } catch (error: any) {
             console.log(`Erro ao listar solicitacoes de acesso especial: ${error}`);
@@ -69,11 +73,43 @@ export default function TeacherDashboard() {
         }
     }
 
+    const buscarAlunosTurma = async () => {
+        setIsLoading?.(true);
+        try {
+            const res = await axios.get<TurmaType[]>(`${UTANGA_API}turma/`, {
+                params: {
+                    id: idTurmaDestino
+                }
+            });
+            const estudantes: UserType[] = [];
+
+            res.data.forEach(({ cadeiras }) => {
+                cadeiras.forEach(({ estudantes: estudantesCadeira }) => {
+                    estudantesCadeira.forEach((estudante) => {
+                        const jaExiste = estudantes.some(e => e.id === estudante.id);
+
+                        if (!jaExiste) {
+                            estudantes.push(estudante);
+                        }
+                    });
+                });
+            });
+
+            setAlunos(estudantes);
+
+        } catch (error) {
+            console.log(`Erro ao buscar alunos: ${error}`);
+        } finally {
+            setIsLoading?.(false);
+        }
+    }
+
     useEffect(() => {
-        fetchSolicitacoes(false); // Carrega as solicitacoes a primeira vez
+        fetchSolicitacoes(); // Carrega as solicitacoes a primeira vez
+        buscarAlunosTurma();
 
         const intervalId = setInterval(() => { // Recarrega as solicitacoes a cada TIME_TO_FETCH_IN_SECONDS
-            fetchSolicitacoes(true);
+            fetchSolicitacoes();
         }, TIME_TO_FETCH_IN_SECONDS);
 
         return () => clearInterval(intervalId);
@@ -89,38 +125,39 @@ export default function TeacherDashboard() {
                     <p className="turma-name"></p>
                 </div>
 
-                {solicitacoes.length > 0 ? <>
-                    <div className="requirements-container">
-                        <h2 className="title">Pedidios de acesso:</h2>
 
-                        {solicitacoes.map(({ id, estudante }, index) => (
-                            <NotificationRow
-                                key={index}
-                                studantName={estudante.nome}
-                                cause="Atraso"
-                                onPermit={() => { responder(id, true) }}
-                                onReject={() => { responder(id, false) }}
-                            />
-                        ))}
-                    </div>
-                    <div className="search-container">
-                        <SearchBar
-                            errorText={search.error}
-                            value={search.value}
-                            changeValue={(value) => { setSearch({ value, error: '' }) }}
-                            placeholder='Pesquisar aluno'
-                            onSearch={() => { }}
+                <div className="requirements-container">
+                    <h2 className="title">{solicitacoes.length === 0 ? 'Sem p' : 'P'}edidios de acesso</h2>
+
+                    {solicitacoes.map(({ id, estudante }, index) => (
+                        <NotificationRow
+                            key={index}
+                            studantName={estudante.nome}
+                            cause="Atraso"
+                            onPermit={() => { responder(id, true) }}
+                            onReject={() => { responder(id, false) }}
                         />
-                    </div>
+                    ))}
+                </div>
+                <div className="search-container">
+                    <SearchBar
+                        errorText={search.error}
+                        value={search.value}
+                        changeValue={(value) => { setSearch({ value, error: '' }) }}
+                        placeholder='Pesquisar aluno'
+                        onSearch={() => { }}
+                    />
+                </div>
 
-                </>
-                    : <div><h2 className="title">Nenhuma solicitação</h2></div>
-                }
 
                 <div className="presents-container">
-                    <h2 className="title">{solicitacoes ? 'Alunos Presentes (A turma está em aulas)' : 'Horário da turma (A turma não está em aulas)'}</h2>
+                    <h2 className="title">{solicitacoes.length ? 'Alunos Presentes (A turma está em aulas)' : 'A turma não está em aulas'}</h2>
 
-
+                    {alunos.map(({ id, nome }) => (
+                        <div className='aluno-row' key={id}>
+                            <p className="aluno">{nome} - {id}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </main>

@@ -23,7 +23,7 @@ const TeacherDashboard = lazy(() => import("./pages/techer_dashboard/TeacherDash
 // Painel Administrador - Telas para monitoramento geral do sistema e gestão de estudantes
 const AdmPainel = lazy(() => import("./pages/adm_dashboard/Painel"));
 const AdmAlunos = lazy(() => import("./pages/adm_dashboard/Alunos"));
-const AdmProfs = lazy(() => import("./pages/adm_dashboard/Profs"));
+const AdmFaltas = lazy(() => import("./pages/adm_dashboard/Faltas"));
 
 function ApplyContext() {
     const { user } = useContext(AuthContext)!;
@@ -53,7 +53,7 @@ function ApplyContext() {
             children: [
                 { path: `/adm/painel`, element: <AdmPainel /> },
                 { path: `/adm/alunos`, element: <AdmAlunos /> },
-                { path: `/adm/profs`, element: <AdmProfs /> },
+                { path: `/adm/faltas`, element: <AdmFaltas /> },
                 { path: '/', element: <Navigate to={`/adm/painel`} replace /> },
                 { path: '/*', element: <Navigate to={`/adm/painel`} replace /> },
             ]

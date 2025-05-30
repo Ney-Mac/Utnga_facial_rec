@@ -12,6 +12,12 @@
         padding: 2.22vw;
         gap: 2.22vw;
 
+        .not-found-text-container {
+            .text-left {
+                text-align: left !important;
+            }
+        }
+
         .prof-data {
             width: 100%;
             background-color: var.$secondary;
