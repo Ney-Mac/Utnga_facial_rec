@@ -9,6 +9,11 @@
         border-radius: 4px;
         background-color: var.$primary;
 
+        &.grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
         .header-cell {
             flex: 1;
             color: #fff;
@@ -29,6 +34,16 @@
             padding: 4px;
             border-radius: 4px;
             background-color: rgba($color: var.$primary, $alpha: 0.1);
+
+            &.grid {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+
+                &>*:last-child {
+                    justify-self: center;
+                    // align-self: center;
+                }
+            }
 
             .item {
                 flex: 1;

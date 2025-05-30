@@ -1,7 +1,8 @@
 export type UserType = {
-    id_usuario: number;
+    id: number;
     tipo: 'adm' | 'estudante' | 'prof';
     nome?: string;
-    ano_letivo?: string;
+    ano_lectivo?: string;
     curso?: string;
+    "dados faciais"?: string;
 }

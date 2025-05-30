@@ -6,9 +6,10 @@ type Props = {
     changeValue: (value: string) => void;
     errorText?: string;
     label?: string;
+    password?: boolean;
 }
 
-export default function TextInput({ placeholder, value, changeValue, errorText, label }: Props) {
+export default function TextInput({ placeholder, password, value, changeValue, errorText, label }: Props) {
     const onChange = (value: string) => {
         changeValue(value);
     }
@@ -20,7 +21,7 @@ export default function TextInput({ placeholder, value, changeValue, errorText, 
             <div className="input-container">
                 <input
                     placeholder={placeholder}
-                    type="text"
+                    type={password ? 'password' : "text"}
                     className="text-input"
                     value={value}
                     onChange={(e) => { onChange(e.target.value) }}

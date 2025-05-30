@@ -6,7 +6,7 @@ import { Loader } from "../../components";
 import { SideMenu } from "../../components/side_menu/SideMenu";
 import { TopMenu } from "../../components/top_menu/TopMenu";
 
-import './mainLayout.scss';
+import './menuLayout.scss';
 
 export default () => {
     const [showSideMenu, setShowSideMenu] = useState(true);

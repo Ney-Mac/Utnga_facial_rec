@@ -1,5 +1,8 @@
 import { useState, useContext, useRef, useCallback } from 'react';
-import { TextInput, Button } from '../';
+import { 
+    // TextInput,
+    Button 
+} from '../';
 import { LoadContext } from '../../contexts/LoadContext';
 import Webcam from 'react-webcam';
 import { FaUser } from "react-icons/fa";
@@ -13,14 +16,15 @@ type Props = {
     show: boolean;
     setShow: React.Dispatch<React.SetStateAction<boolean>>;
     idLabel: string;
+    idAluno: number;
 }
 
-type InputType = {
-    value: string;
-    error: string;
-}
+// type InputType = {
+//     value: string;
+//     error: string;
+// }
 
-export default function ModalAddAluno({ show, setShow, idLabel }: Props) {
+export default function ModalAddAluno({ show, setShow, idLabel, idAluno }: Props) {
     const [responseError, setResponseError] = useState('');
     const { setIsLoading } = useContext(LoadContext);
 
@@ -28,13 +32,13 @@ export default function ModalAddAluno({ show, setShow, idLabel }: Props) {
     const [isCameraOn] = useState(true);
     const [image, setImage] = useState<string>('');
 
-    const [idAluno, setIdAluno] = useState<InputType>({ value: '', error: '' });
+    // const [idAluno, setIdAluno] = useState<InputType>({ value: '', error: '' });
 
     const onClose = () => {
         setResponseError('');
         setShow(false);
         setImage('');
-        setIdAluno({ value: '', error: '' })
+        // setIdAluno({ value: '', error: '' })
     }
 
     const stopPropagation = (event: React.MouseEvent) => {
@@ -61,7 +65,7 @@ export default function ModalAddAluno({ show, setShow, idLabel }: Props) {
 
             const formData = new FormData();
             formData.append('image', file);
-            formData.append("id_usuario", idAluno.value);
+            formData.append("id_usuario", String(idAluno));
             formData.append("tipo", tipo)
 
             const res = await axios.post(`${API_URL}usuario/registrar`, formData, {
@@ -85,12 +89,12 @@ export default function ModalAddAluno({ show, setShow, idLabel }: Props) {
     }
 
     const onRegister = () => {
-        const idError = idAluno.value === '' ? '*Campo obrigatorio.' : '';
+        // const idError = idAluno.value === '' ? '*Campo obrigatorio.' : '';
         
-        if (idError) {
-            setIdAluno({ ...idAluno, error: idError });
-            return;
-        }
+        // if (idError) {
+        //     setIdAluno({ ...idAluno, error: idError });
+        //     return;
+        // }
 
         registrarAluno();
     }
@@ -102,7 +106,7 @@ export default function ModalAddAluno({ show, setShow, idLabel }: Props) {
             setImage(screenshot);
         }
 
-        if (idAluno.value) registrarAluno();
+        // if (idAluno.value) registrarAluno();
     }, [webcamRef]);
 
     return (
@@ -111,7 +115,7 @@ export default function ModalAddAluno({ show, setShow, idLabel }: Props) {
                 <div className="container" onClick={stopPropagation}>
                     {responseError && <p className="response-error">Ocorreu uma falha: {responseError}</p>}
 
-                    <div className="row">
+                    {/* <div className="row">
                         <TextInput
                             label={`Digite o id do ${idLabel}:`}
                             placeholder='Id'
@@ -119,7 +123,7 @@ export default function ModalAddAluno({ show, setShow, idLabel }: Props) {
                             changeValue={(value) => { setIdAluno({ value: value, error: '' }) }}
                             errorText={idAluno.error}
                         />
-                    </div>
+                    </div> */}
 
                     <div className="row-cam">
                         <p className="label">Capturar imagem</p>

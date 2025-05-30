@@ -5,31 +5,25 @@ import { LoadContextProvider } from './contexts/LoadContext';
 
 import './App.scss';
 
-const MainLayout = lazy(() => import("./layouts/main/MainLayout"));
+// Layouts - Contém componentes padrão de várias telas. ex: Menu (para telas que usam)
+const MenuLayout = lazy(() => import("./layouts/menu/MenuLayout"));
+const Layout = lazy(() => import("./layouts/geral/Layout"));
+
+// Login - Telas para validação de identidade e turmas
+const Login = lazy(() => import("./pages/login/Login"));
+const LoginProfAdm = lazy(() => import("./pages/login/LoginProfAdm"));
+const Turmas = lazy(() => import("./pages/turmas/Turmas"));
+
+// Painel Estudante - Telas para estudantes em diferentes situações
+const StudantWelcomePage = lazy(() => import("./pages/studant/WelcomePage"));
+
+// Painel Professor - Telas para monitoramento de turmas
+const TeacherDashboard = lazy(() => import("./pages/techer_dashboard/TeacherDashboard"));
+
+// Painel Administrador - Telas para monitoramento geral do sistema e gestão de estudantes
 const AdmPainel = lazy(() => import("./pages/adm_dashboard/Painel"));
 const AdmAlunos = lazy(() => import("./pages/adm_dashboard/Alunos"));
 const AdmProfs = lazy(() => import("./pages/adm_dashboard/Profs"));
-
-const TeacherDashboard = lazy(() => import("./pages/techer_dashboard/TeacherDashboard"));
-
-const StudantWelcomePage = lazy(() => import("./pages/studant/WelcomePage"));
-
-const Layout = lazy(() => import("./layouts/login/LoginLayout"));
-const Login = lazy(() => import("./pages/login/Login"));
-
-const Turma = lazy(() => import("./pages/turmas/Turmas"));
-
-function App() {
-    return (
-        <Suspense>
-            <LoadContextProvider>
-                <AuthContextProvider>
-                    <ApplyContext />
-                </AuthContextProvider>
-            </LoadContextProvider>
-        </Suspense>
-    )
-}
 
 function ApplyContext() {
     const { user } = useContext(AuthContext)!;
@@ -39,8 +33,9 @@ function ApplyContext() {
             path: '/',
             element: <Layout />,
             children: [
-                { path: '/aceder-turma', element: <Turma /> },
+                { path: '/aceder-turma', element: <Turmas /> },
                 { path: '/login', element: <Login /> },
+                { path: '/login-prof-adm', element: <LoginProfAdm /> },
                 { path: '/', element: <Navigate to='/aceder-turma' replace /> },
                 { path: '/*', element: <Navigate to='/aceder-turma' replace /> },
             ]
@@ -54,7 +49,7 @@ function ApplyContext() {
     const admDashboardRoutes = createBrowserRouter([
         {
             path: '/',
-            element: <MainLayout />,
+            element: <MenuLayout />,
             children: [
                 { path: `/adm/painel`, element: <AdmPainel /> },
                 { path: `/adm/alunos`, element: <AdmAlunos /> },
@@ -70,9 +65,9 @@ function ApplyContext() {
             path: '/',
             element: <Layout />,
             children: [
-                { path: '/', element: <Navigate to={`/`} replace /> },
-                { path: `/`, element: <StudantWelcomePage /> },
-                { path: '/*', element: <Navigate to={`/`} replace /> }
+                { path: '/', element: <Navigate to={`/estudante`} replace /> },
+                { path: `/estudante`, element: <StudantWelcomePage /> },
+                { path: '/*', element: <Navigate to={`/estudante`} replace /> }
             ]
         }
     ]);
@@ -88,10 +83,22 @@ function ApplyContext() {
             ]
         },
     ]);
-    
+
     const route = tipo === 'adm' ? admDashboardRoutes : tipo === 'estudante' ? studantRoutes : profDashboardRoutes;
 
     return <RouterProvider router={route} key={user.tipo} />
+}
+
+function App() {
+    return (
+        <Suspense>
+            <LoadContextProvider>
+                <AuthContextProvider>
+                    <ApplyContext />
+                </AuthContextProvider>
+            </LoadContextProvider>
+        </Suspense>
+    )
 }
 
 export default App

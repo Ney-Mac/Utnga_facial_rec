@@ -1,0 +1,37 @@
+@use '../../assets/styles/variables.scss' as var;
+
+.painel-main {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    padding-bottom: 1.11vw;
+    overflow-y: auto;
+
+    .container-search {
+            max-width: 250px;
+        }
+
+    .title {
+        font-size: 24px;
+        text-align: center;
+        color: var.$primary;
+        width: 100%;
+    }
+
+    .log {
+        padding: 12px;
+        color: #fff;
+        background-color: var.$primary;
+        border-radius: 8px;
+    }
+
+    .ultimos-acessos {
+        .last-title {
+            width: 100%;
+            text-align: center;
+            padding: 12px 0;
+        }
+    }
+}

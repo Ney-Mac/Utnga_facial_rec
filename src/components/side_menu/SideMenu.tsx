@@ -5,8 +5,8 @@ import './sideMenu.scss';
 export function SideMenu() {
     const links = [
         { to: `/adm/painel`, text: 'Painel de Monitoramento' },
-        { to: `/adm/alunos`, text: 'Alunos' },
-        { to: `/adm/profs`, text: 'Professores e Administradores' },
+        { to: `/adm/alunos`, text: 'Estudantes' },
+        // { to: `/adm/profs`, text: 'Professores e Administradores' },
     ]
 
     return (

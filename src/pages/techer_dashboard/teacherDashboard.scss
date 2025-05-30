@@ -12,6 +12,21 @@
         padding: 2.22vw;
         gap: 2.22vw;
 
+        .prof-data {
+            width: 100%;
+            background-color: var.$secondary;
+            padding: 8px 12px;
+            border-radius: 8px;
+
+            .prof-name {
+                color: #fff;
+            }
+
+            .turma-name {
+                color: #fff;
+            }
+        }
+
         .requirements-container {
             display: flex;
             flex-direction: column;

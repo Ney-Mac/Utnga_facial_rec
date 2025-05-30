@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Loader } from '../../components';
-import './loginLayout.scss';
+import './layout.scss';
 
 export default () => {
     return (
